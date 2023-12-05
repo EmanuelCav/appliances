@@ -1,0 +1,4 @@
+@API =  http://localhost:4000
+
+### USERS
+GET {{API}}/users
