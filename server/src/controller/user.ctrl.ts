@@ -1,8 +1,7 @@
-import { Request, Response, response } from "express";
-import { PrismaClient } from '@prisma/client';
+import { Request, Response } from "express";
 import { comparePassword, generateHash, generateToken } from "../helper/encrypt";
 
-const prisma = new PrismaClient()
+import { prisma } from '../helper/prisma';
 
 export const users = async (req: Request, res: Response): Promise<Response> => {
 
@@ -20,7 +19,7 @@ export const users = async (req: Request, res: Response): Promise<Response> => {
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
 
-    const { name, surname, email, address, phone, password } = req.body
+    const { name, surname, email, address, phone, password, province } = req.body
 
     try {
 
@@ -34,7 +33,8 @@ export const register = async (req: Request, res: Response): Promise<Response> =
                 address,
                 phone,
                 password: pass,
-                role: 'CLIENT'
+                role: 'CLIENT',
+                province
             }
         })
 
@@ -89,7 +89,7 @@ export const removeUser = async (req: Request, res: Response): Promise<Response>
 
         const user = await prisma.user.findUnique({
             where: {
-                id: parseInt(id)
+                id: Number(id)
             }
         })
 
@@ -99,7 +99,7 @@ export const removeUser = async (req: Request, res: Response): Promise<Response>
 
         await prisma.user.delete({
             where: {
-                id: parseInt(id)
+                id: Number(id)
             }
         })
 
@@ -116,13 +116,13 @@ export const removeUser = async (req: Request, res: Response): Promise<Response>
 export const updateUser = async (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params
-    const { name, surname, email, address, phone } = req.body
+    const { address, phone, province } = req.body
 
     try {
 
         const user = await prisma.user.findUnique({
             where: {
-                id: parseInt(id)
+                id: Number(id)
             }
         })
 
@@ -135,11 +135,9 @@ export const updateUser = async (req: Request, res: Response): Promise<Response>
                 id: parseInt(id)
             },
             data: {
-                name,
-                surname,
-                email,
                 address,
-                phone
+                phone,
+                province
             }
         })
 

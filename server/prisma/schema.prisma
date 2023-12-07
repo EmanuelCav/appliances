@@ -11,16 +11,26 @@ datasource db {
 }
 
 model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  surname    String
+  email      String   @unique
+  phone      String
+  role       Role     @default(CLIENT)
+  address    String
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  provinceId Int
+  province   Province @relation(fields: [provinceId], references: [id])
+}
+
+model Province {
   id        Int      @id @default(autoincrement())
-  name      String
-  surname   String
-  email     String   @unique
-  phone     String
-  role      Role     @default(CLIENT)
-  address   String
-  password  String
+  province  String   @unique
+  User      User[]
   createdAt DateTime @default(now())
-  updatedAr DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
