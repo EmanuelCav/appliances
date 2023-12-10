@@ -33,6 +33,38 @@ model Province {
   updatedAt DateTime @updatedAt
 }
 
+model Product {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  images      Image[]
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  price       Int
+  stock       Int      @default(0)
+  isHide      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  image     String
+  imageId   String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  category  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Product   Product[]
+}
+
 enum Role {
   CLIENT
   ADMIN
