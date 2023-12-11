@@ -2,6 +2,7 @@
 
 ### USERS
 GET {{API}}/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAyMzA1MTYwLCJleHAiOjE3MDQ4OTcxNjB9.1wi02n45_iDzMIoKobaBIxKyAM-ghdNzBo3N-G-g5Is
 
 ### USERS
 GET {{API}}/users/2
@@ -21,6 +22,16 @@ Content-Type: application/json
     "confirmPassword": "toiyupDesque123",
     "province": "Capital Federal"
 }
+
+### LOGIN
+POST {{API}}/users/login
+Content-Type: application/json
+
+{
+    "email": "cavallinema@gmail.com",
+    "password": "toiyupDesque123"
+}
+
 
 ### REMOVE USER
 DELETE {{API}}/users/1

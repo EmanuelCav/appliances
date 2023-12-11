@@ -15,11 +15,11 @@ export const comparePassword = async (password: string, hash: string): Promise<b
     return await compare(password, hash)
 }
 
-export const generateToken = async (id: number): Promise<string> => {
+export const generateToken = (id: number): string => {
 
     const token: string = jwt.sign({ id }, `${jwt_key}`, {
         expiresIn: '30d'
-    })
+    })    
 
     return token
 

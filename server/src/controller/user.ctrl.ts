@@ -127,7 +127,12 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
             return res.status(400).json({ message: "Fields do not match" })
         }
 
-        return res.status(200).json(user)
+        const token = generateToken(user.id)
+
+        return res.status(200).json({
+            user,
+            token
+        })
 
     } catch (error) {
         throw error

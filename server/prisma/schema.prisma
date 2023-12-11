@@ -23,6 +23,8 @@ model User {
   updatedAt  DateTime @updatedAt
   provinceId Int
   province   Province @relation(fields: [provinceId], references: [id])
+  Cart       Cart[]
+  Buy        Buy[]
 }
 
 model Province {
@@ -43,8 +45,11 @@ model Product {
   price       Int
   stock       Int      @default(0)
   isHide      Boolean  @default(false)
+  brand       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Cart        Cart[]
+  Buy         Buy[]
 }
 
 model Image {
@@ -63,6 +68,25 @@ model Category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Product   Product[]
+}
+
+model Cart {
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  productId Int
+  quantity  Int
+
+  @@id(name: "cartId", [productId, userId])
+}
+
+model Buy {
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  productId Int
+
+  @@id(name: "buyId", [productId, userId])
 }
 
 enum Role {
