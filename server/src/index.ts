@@ -15,6 +15,7 @@ app.set('port', port)
 import userRoute from './routes/user.routes';
 import productRoute from './routes/product.routes';
 import categoryRoute from './routes/category.routes';
+import provinceRoute from './routes/province.routes';
 
 app.use(morgan('dev'))
 app.use(cors())
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true, limit: '30mb' }))
 app.use(userRoute)
 app.use(productRoute)
 app.use(categoryRoute)
+app.use(provinceRoute)
 
 app.use(express.static(path.join(__dirname, "../public")))
 

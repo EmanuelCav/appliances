@@ -19,11 +19,17 @@ export const users = async (req: Request, res: Response): Promise<Response> => {
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
 
-    const { name, surname, email, address, phone, password, province } = req.body
+    const { name, surname, email, address, phone, role, password, province } = req.body
 
     try {
 
         const pass = await generateHash(password)
+
+        const userProvince = await prisma.province.findUnique({
+            where: {
+                province
+            }
+        })
 
         const newUser = await prisma.user.create({
             data: {
@@ -33,7 +39,8 @@ export const register = async (req: Request, res: Response): Promise<Response> =
                 address,
                 phone,
                 password: pass,
-                role: 'CLIENT',
+                role,
+                provinceId: userProvince?.id,
                 province
             }
         })

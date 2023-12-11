@@ -1,0 +1,15 @@
+@API = http://localhost:4000
+
+### GET PROVINCES
+GET {{API}}/provinces
+
+### CREATE PROVINCE
+POST {{API}}/provinces
+Content-Type: application/json
+
+{
+    "province": "Capital Federal"
+}
+
+### REMOVE PROVINCE
+DELETE {{API}}/provinces/
