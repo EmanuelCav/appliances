@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../../helper/prisma";
 
-const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
+const admin = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await prisma.user.findUnique({
         where: {
@@ -21,5 +21,5 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
 }
 
-export default isAdmin
+export default admin
 

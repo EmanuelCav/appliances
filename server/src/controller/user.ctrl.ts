@@ -7,9 +7,49 @@ export const users = async (req: Request, res: Response): Promise<Response> => {
 
     try {
 
-        const users = await prisma.user.findMany()
+        const users = await prisma.user.findMany({
+            include: {
+                province: {
+                    select: {
+                        province: true
+                    }
+                }
+            },
+            take: 10
+        })
 
         return res.status(200).json(users)
+
+    } catch (error) {
+        throw error
+    }
+
+}
+
+export const user = async (req: Request, res: Response): Promise<Response> => {
+
+    const { id } = req.params
+
+    try {
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: Number(id)
+            },
+            include: {
+                province: {
+                    select: {
+                        province: true
+                    }
+                }
+            }
+        })
+
+        if (!user) {
+            return res.status(400).json({ message: "User does not exists" })
+        }
+
+        return res.status(200).json(user)
 
     } catch (error) {
         throw error
@@ -31,6 +71,10 @@ export const register = async (req: Request, res: Response): Promise<Response> =
             }
         })
 
+        if (!userProvince) {
+            return res.status(400).json({ message: "Province does not exists" })
+        }
+
         const newUser = await prisma.user.create({
             data: {
                 name,
@@ -40,8 +84,11 @@ export const register = async (req: Request, res: Response): Promise<Response> =
                 phone,
                 password: pass,
                 role,
-                provinceId: userProvince?.id,
-                province
+                province: {
+                    connect: {
+                        province: userProvince.province
+                    }
+                }
             }
         })
 

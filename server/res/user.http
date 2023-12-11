@@ -2,3 +2,25 @@
 
 ### USERS
 GET {{API}}/users
+
+### USERS
+GET {{API}}/users/2
+
+### REGISTER
+POST {{API}}/users/register
+Content-Type: application/json
+
+{
+    "name": "Emanuel",
+    "surname": "Cavallin",
+    "email": "cavallinema@gmail.com",
+    "address": "Llavallol 5425",
+    "phone": "1161355041",
+    "role": "ADMIN",
+    "password": "toiyupDesque123",
+    "confirmPassword": "toiyupDesque123",
+    "province": "Capital Federal"
+}
+
+### REMOVE USER
+DELETE {{API}}/users/1
