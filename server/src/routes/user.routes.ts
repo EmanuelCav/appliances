@@ -2,9 +2,9 @@ import { Router } from 'express';
 
 import * as userCtrl from '../controller/user.ctrl';
 
-import registerValid from '../middleware/validation/register.valid';
-import loginValid from '../middleware/validation/login.valid';
-import updateUserValid from '../middleware/validation/user.update';
+import registerValid from '../middleware/validation/user/register.valid';
+import loginValid from '../middleware/validation/user/login.valid';
+import updateUserValid from '../middleware/validation/user/user.update';
 
 import auth from '../middleware/auth/auth';
 import admin from '../middleware/auth/admin';

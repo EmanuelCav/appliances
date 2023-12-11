@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { numberValidation } from '../../helper/validations';
-import { prisma } from "../../helper/prisma";
+import { numberValidation } from '../../../helper/validations';
+import { prisma } from "../../../helper/prisma";
 
 const updateUserValid = async (req: Request, res: Response, next: NextFunction) => {
 
