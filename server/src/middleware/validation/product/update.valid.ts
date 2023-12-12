@@ -3,11 +3,7 @@ import { numberValidation } from '../../../helper/validations';
 
 const updateValid = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { title, description, category, price, stock, brand, isHide } = req.body
-
-    if (!title || !description || !category || !price || !stock || !isHide || !brand) {
-        return res.status(400).json({ message: "There are empty fields. Please complete" })
-    }
+    const { price, stock } = req.body
 
     const isPriceValid = numberValidation.test(price)
 

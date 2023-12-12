@@ -17,6 +17,6 @@ router.get('/products/:id', productCtrl.product)
 router.get('/category/:category/products', productCtrl.categoryProducts)
 router.post('/products', [auth, admin], upload.array("files", 10), createValid, productCtrl.createProduct)
 router.delete('/products/:id', [auth, admin], productCtrl.removeProduct)
-router.put('/products/:id', [auth, admin], updateValid, productCtrl.updateProduct)
+router.put('/products/:id', [auth, admin], upload.array("files", 10), updateValid, productCtrl.updateProduct)
 
 export default router

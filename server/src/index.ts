@@ -16,6 +16,7 @@ import userRoute from './routes/user.routes';
 import productRoute from './routes/product.routes';
 import categoryRoute from './routes/category.routes';
 import provinceRoute from './routes/province.routes';
+import imageRoute from './routes/image.routes';
 
 app.use(morgan('dev'))
 app.use(cors())
@@ -26,6 +27,7 @@ app.use(userRoute)
 app.use(productRoute)
 app.use(categoryRoute)
 app.use(provinceRoute)
+app.use(imageRoute)
 
 app.use(express.static(path.join(__dirname, "../public")))
 

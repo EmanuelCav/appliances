@@ -100,7 +100,7 @@ export const createProduct = async (req: Request, res: Response): Promise<Respon
                 description,
                 price: Number(price),
                 stock: Number(stock),
-                isHide,
+                isHide: Boolean(isHide),
                 category: {
                     connect: {
                         category: categoryProduct.category
@@ -159,6 +159,21 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
             return res.status(400).json({ message: "Product does not exists" })
         }
 
+        const images = await prisma.image.findMany({
+            where: {
+                productId: product.id
+            }
+        })
+
+        for (let i = 0; i < images.length; i++) {
+            await cloud.uploader.destroy(images[i].imageId)
+            await prisma.image.delete({
+                where: {
+                    id: images[i].id
+                }
+            })
+        }
+
         await prisma.product.delete({
             where: {
                 id: Number(id)
@@ -176,13 +191,16 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
 export const updateProduct = async (req: Request, res: Response): Promise<Response> => {
 
     const { id } = req.params
-    const { title, description, price, stock, isHide } = req.body
+    const { title, description, category, price, stock, brand, isHide } = req.body
 
     try {
 
         const product = await prisma.product.findUnique({
             where: {
                 id: Number(id)
+            },
+            include: {
+                category: true
             }
         })
 
@@ -190,19 +208,86 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
             return res.status(400).json({ message: "Product does not exists" })
         }
 
-        const productUpdated = await prisma.product.update({
+        let categoryProduct
+
+        if (category) {
+            categoryProduct = await prisma.category.findUnique({
+                where: {
+                    category
+                }
+            })
+        }
+
+        if (!categoryProduct) {
+            return res.status(400).json({ message: "Category does not exists" })
+        }
+
+        if ((req.files?.length as number) > 0) {
+            const images = await prisma.image.findMany({
+                where: {
+                    productId: product.id
+                }
+            })
+
+            for (let i = 0; i < images.length; i++) {
+                await cloud.uploader.destroy(images[i].imageId)
+                await prisma.image.delete({
+                    where: {
+                        id: images[i].id
+                    }
+                })
+            }
+
+            for (let i = 0; i < (req.files?.length as number); i++) {
+
+                const result = await cloud.uploader.upload((req.files as Express.Multer.File[])[i].path, {
+                    folder: `${folder}`,
+                    use_filename: true
+                })
+
+                await prisma.product.update({
+                    where: {
+                        id: Number(id)
+                    },
+                    data: {
+                        images: {
+                            create: [{
+                                image: result.secure_url,
+                                imageId: result.public_id
+                            }]
+                        }
+                    }
+                })
+
+                await unlink((req.files as Express.Multer.File[])[i].path)
+
+            }
+        }
+
+        await prisma.product.update({
             where: {
                 id: Number(id)
             },
             data: {
-                title,
-                description,
-                price,
-                stock
+                title: title ? title : product.title,
+                description: description ? description : product.description,
+                price: price ? Number(price) : product.price,
+                stock: stock ? Number(stock) : product.stock,
+                category: category ? {
+                    connect: {
+                        category: categoryProduct.category
+                    }
+                } : {
+                    connect: {
+                        category: product.category.category
+                    }
+                },
+                brand: brand ? brand : product.brand,
+                isHide: isHide ? Boolean(isHide) : product.isHide
             }
         })
 
-        return res.status(200).json(productUpdated)
+        return res.status(200).json({ message: "Product updated successfully" })
 
     } catch (error) {
         throw error
