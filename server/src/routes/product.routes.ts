@@ -14,7 +14,8 @@ const router = Router()
 
 router.get('/products', productCtrl.products)
 router.get('/products/:id', productCtrl.product)
-router.post('/products', upload.array("files", 10), [auth, admin], createValid, productCtrl.createProduct)
+router.get('/category/:category/products', productCtrl.categoryProducts)
+router.post('/products', [auth, admin], upload.array("files", 10), createValid, productCtrl.createProduct)
 router.delete('/products/:id', [auth, admin], productCtrl.removeProduct)
 router.put('/products/:id', [auth, admin], updateValid, productCtrl.updateProduct)
 

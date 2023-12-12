@@ -64,7 +64,7 @@ model Image {
 
 model Category {
   id        Int       @id @default(autoincrement())
-  category  String
+  category  String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Product   Product[]

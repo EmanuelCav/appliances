@@ -1,13 +1,19 @@
 import { Request, Response } from "express";
+import { unlink } from 'fs-extra';
 
 import { prisma } from "../helper/prisma";
+import { cloud } from "../helper/images/cloud";
+import { folder } from "../config/config";
 
 export const products = async (req: Request, res: Response): Promise<Response> => {
 
     try {
 
         const products = await prisma.product.findMany({
-            take: 10
+            take: 10,
+            include: {
+                images: true
+            }
         })
 
         return res.status(200).json(products)
@@ -42,24 +48,94 @@ export const product = async (req: Request, res: Response): Promise<Response> =>
 
 }
 
-export const createProduct = async (req: Request, res: Response): Promise<Response> => {
+export const categoryProducts = async (req: Request, res: Response): Promise<Response> => {
 
-    const { title, description, category, price, stock, isHide } = req.body
+    const { category } = req.params
 
     try {
+
+        const categorySelected = await prisma.category.findUnique({
+            where: {
+                category
+            }
+        })
+
+        if (!categorySelected) {
+            return res.status(400).json({ message: "Category does not exists" })
+        }
+
+        const products = await prisma.product.findMany({
+            where: {
+                categoryId: categorySelected.id
+            }
+        })
+
+        return res.status(400).json(products)
+
+    } catch (error) {
+        throw error
+    }
+
+}
+
+export const createProduct = async (req: Request, res: Response): Promise<Response> => {
+
+    const { title, description, category, price, stock, brand, isHide } = req.body
+
+    try {
+
+        const categoryProduct = await prisma.category.findUnique({
+            where: {
+                category
+            }
+        })
+
+        if (!categoryProduct) {
+            return res.status(400).json({ message: "Category does not exists" })
+        }
 
         const newProduct = await prisma.product.create({
             data: {
                 title,
                 description,
-                price,
-                stock,
+                price: Number(price),
+                stock: Number(stock),
                 isHide,
-                category
+                category: {
+                    connect: {
+                        category: categoryProduct.category
+                    }
+                },
+                brand
             }
         })
 
-        return res.status(200).json({ message: "createProduct" })
+        for (let i = 0; i < (req.files?.length as number); i++) {
+
+            const result = await cloud.uploader.upload((req.files as Express.Multer.File[])[i].path, {
+                folder: `${folder}`,
+                use_filename: true
+            })
+
+            await prisma.product.update({
+                where: {
+                    id: newProduct.id
+                },
+                data: {
+                    images: {
+                        create: [{
+                            image: result.secure_url,
+                            imageId: result.public_id
+                        }]
+                    }
+                }
+            })
+
+            await unlink((req.files as Express.Multer.File[])[i].path)
+
+        }
+
+        return res.status(200).json({ message: "Product created successfully" })
 
     } catch (error) {
         throw error

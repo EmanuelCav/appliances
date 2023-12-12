@@ -3,9 +3,9 @@ import { numberValidation } from '../../../helper/validations';
 
 const createValid = async (req: Request, res: Response, next: NextFunction) => {
 
-    const { title, description, category, price, stock, brand, isHide } = req.body
+    const { title, description, category, price, stock, brand } = req.body
 
-    if (!title || !description || !category || !price || !stock || !isHide || !brand) {
+    if (!title || !description || !category || !price || !stock || !brand) {
         return res.status(400).json({ message: "There are empty fields. Please complete" })
     }
 
@@ -21,7 +21,7 @@ const createValid = async (req: Request, res: Response, next: NextFunction) => {
         return res.status(400).json({ message: "Stock is not valid" })
     }
 
-    if (!req.files) {
+    if (req.files?.length === 0) {
         return res.status(400).json({ message: "You must upload files" })
     }
 

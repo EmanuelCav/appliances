@@ -11,6 +11,7 @@ export const users = async (req: Request, res: Response): Promise<Response> => {
             include: {
                 province: {
                     select: {
+                        id: true,
                         province: true
                     }
                 }
