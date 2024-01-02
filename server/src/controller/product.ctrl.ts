@@ -30,7 +30,7 @@ export const product = async (req: Request, res: Response): Promise<Response> =>
 
     try {
 
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.findFirst({
             where: {
                 id: Number(id)
             }
@@ -149,7 +149,7 @@ export const removeProduct = async (req: Request, res: Response): Promise<Respon
 
     try {
 
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.findFirst({
             where: {
                 id: Number(id)
             }
@@ -195,7 +195,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<Respon
 
     try {
 
-        const product = await prisma.product.findUnique({
+        const product = await prisma.product.findFirst({
             where: {
                 id: Number(id)
             },

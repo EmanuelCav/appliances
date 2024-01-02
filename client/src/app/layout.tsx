@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import { Lato } from 'next/font/google'
 import './globals.css'
 
-const inter = Montserrat({ subsets: ['latin'], weight: '500' })
+import Header from '@/components/header/header'
+
+const lato = Lato({ subsets: ['latin'], weight: '400' })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,8 +18,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
-        {children}
+      <head>
+        <link rel="shortcut icon" href="oven.svg" type="image/x-icon" />
+      </head>
+      <body className={lato.className}>
+        <div className="container-body">
+          <Header />
+          {children}
+        </div>
       </body>
     </html>
   )
