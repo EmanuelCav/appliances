@@ -3,6 +3,7 @@ import { Lato } from 'next/font/google'
 import './globals.css'
 
 import Header from '@/components/header/header'
+import ProductContextGlobal from '@/server/actions/products.actions'
 
 const lato = Lato({ subsets: ['latin'], weight: '400' })
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       </head>
       <body className={lato.className}>
         <div className="container-body">
-          <Header />
+          <ProductContextGlobal>
+            <Header />
+          </ProductContextGlobal>
           {children}
         </div>
       </body>
