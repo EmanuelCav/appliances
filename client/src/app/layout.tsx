@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import { Lato } from 'next/font/google'
 import './globals.css'
 
-import Header from '@/components/header/header'
 import ProductContextGlobal from '@/server/actions/products.actions'
+
+import Header from '@/components/header/header'
+import Navigation from '@/components/navigation/navigation'
 
 const lato = Lato({ subsets: ['latin'], weight: '400' })
 
@@ -26,8 +28,9 @@ export default function RootLayout({
         <div className="container-body">
           <ProductContextGlobal>
             <Header />
+            <Navigation />
+            {children}
           </ProductContextGlobal>
-          {children}
         </div>
       </body>
     </html>

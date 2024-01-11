@@ -5,7 +5,8 @@ import * as productsConstants from "../constants/products.const";
 
 import { productsValue } from "../values/products.value";
 
-const productsReducer = (state: IReducerProduct = productsValue, action: IAction) => {
+const productsReducer = (state: IReducerProduct = productsValue, action: IAction): IReducerProduct | any => {
+    console.log(action);
 
     switch (action.type) {
         case productsConstants.CATEGORIES:

@@ -1,3 +1,11 @@
 export interface IReducerProduct {
-    categories: any[];
+    categories: ICategory[];
+    getCategories?: () => void;
+}
+
+export interface ICategory {
+    _id: string;
+    category: string;
+    createdAt: string;
+    updatedAt: string
 }

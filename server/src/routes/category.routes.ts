@@ -7,7 +7,7 @@ import admin from '../middleware/auth/admin';
 
 const router = Router()
 
-router.get('/categories', [auth, admin], categoryCtrl.categories)
+router.get('/categories', categoryCtrl.categories)
 router.post('/categories', [auth, admin], categoryCtrl.createCategory)
 router.delete('/categories/:id', [auth, admin], categoryCtrl.removeCategory)
 
