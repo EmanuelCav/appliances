@@ -1,7 +1,20 @@
-import Image from 'next/image'
+import Product from '@/components/products/product'
 
-export default function Home() {
+import { IProduct } from '@/interface/Product'
+
+import { getProducts } from '@/server/api/product.api'
+
+export default async function Home() {
+
+  const products: IProduct[] = await getProducts()
+
   return (
-    <p>Hello</p>
+    <div className="flex justify-between items-center w-full p-14">
+      {
+        products.map((product: IProduct) => {
+          return <Product product={product} key={product.id} />
+        })
+      }
+    </div>
   )
 }

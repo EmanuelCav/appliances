@@ -4,7 +4,7 @@ import { ICategory } from '@/interface/Product'
 
 const Navigation = async () => {
 
-  const categories = await getCategoriesApi()
+  const categories: ICategory[] = await getCategoriesApi()
 
   return (
     <div className='flex justify-around align-center p-2 bg-indigo-200'>

@@ -29,7 +29,9 @@ export default function RootLayout({
           <ProductContextGlobal>
             <Header />
             <Navigation />
-            {children}
+            <div className="container mx-auto bg-white">
+              {children}
+            </div>
           </ProductContextGlobal>
         </div>
       </body>

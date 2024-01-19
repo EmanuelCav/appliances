@@ -36,20 +36,21 @@ model Province {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  images      Image[]
-  categoryId  Int
-  category    Category @relation(fields: [categoryId], references: [id])
-  price       Int
-  stock       Int      @default(0)
-  isHide      Boolean  @default(false)
-  brand       String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Cart        Cart[]
-  Buy         Buy[]
+  id               Int      @id @default(autoincrement())
+  title            String
+  shortDescription String
+  description      String
+  images           Image[]
+  categoryId       Int
+  category         Category @relation(fields: [categoryId], references: [id])
+  price            Int
+  stock            Int      @default(0)
+  isHide           Boolean  @default(false)
+  brand            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  Cart             Cart[]
+  Buy              Buy[]
 }
 
 model Image {

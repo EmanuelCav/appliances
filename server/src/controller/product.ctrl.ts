@@ -80,7 +80,7 @@ export const categoryProducts = async (req: Request, res: Response): Promise<Res
 
 export const createProduct = async (req: Request, res: Response): Promise<Response> => {
 
-    const { title, description, category, price, stock, brand, isHide } = req.body
+    const { title, shortDescription, description, category, price, stock, brand, isHide } = req.body
 
     try {
 
@@ -97,6 +97,7 @@ export const createProduct = async (req: Request, res: Response): Promise<Respon
         const newProduct = await prisma.product.create({
             data: {
                 title,
+                // shortDescription,
                 description,
                 price: Number(price),
                 stock: Number(stock),
